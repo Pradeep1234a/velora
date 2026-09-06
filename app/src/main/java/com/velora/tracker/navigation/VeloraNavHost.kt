@@ -1,6 +1,7 @@
 package com.velora.tracker.navigation
 
 import android.app.Application
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -10,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -83,7 +85,7 @@ fun VeloraNavHost(application: Application) {
         NavHost(
             navController = navController,
             startDestination = VeloraDestination.Splash.route,
-            modifier = Modifier.padding(if (currentRoute == VeloraDestination.Splash.route) androidx.compose.foundation.layout.PaddingValues(0.dp) else innerPadding)
+            modifier = Modifier.padding(if (currentRoute == VeloraDestination.Splash.route) PaddingValues(0.dp) else innerPadding)
         ) {
             composable(VeloraDestination.Splash.route) {
                 SplashScreen(
