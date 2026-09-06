@@ -1,284 +1,592 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Velora — Transactions</title>
+<style>
+  :root{
+    --bg:#f7faf9;
+    --surface:#ffffff;
+    --text:#101b3a;
+    --muted:#71809a;
+    --line:#e7eeec;
+    --teal:#0c9188;
+    --teal-dark:#08786f;
+    --income:#087f4f;
+    --income-soft:#e6f8ef;
+    --expense:#ef3f16;
+    --expense-soft:#fff0eb;
+    --net:#15939a;
+    --net-soft:#e5f6f7;
+    --search:#eef3f5;
+    --nav:#ffffff;
+  }
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-tertiary-fixed": "#001f26", "on-primary-container": "#a3faef", "surface-container-low": "#eff4ff", "primary-fixed": "#9cf2e8", "surface-container-high": "#dce9ff", "on-primary-fixed": "#00201d", "inverse-surface": "#213145", "tertiary-fixed-dim": "#4cd7f6", "on-tertiary-fixed-variant": "#004e5c", "on-primary-fixed-variant": "#00504a", "secondary-fixed": "#71f8e4", "surface-dim": "#cbdbf5", "on-surface": "#0b1c30", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff", "outline-variant": "#bdc9c6", "surface-container-lowest": "#ffffff", "tertiary-fixed": "#acedff", "on-secondary": "#ffffff", "surface-bright": "#f8f9ff", "error": "#ba1a1a", "on-tertiary-container": "#c6f2ff", "surface": "#f8f9ff", "surface-tint": "#006a63", "inverse-primary": "#80d5cb", "error-container": "#ffdad6", "on-secondary-container": "#006f64", "outline": "#6e7977", "tertiary": "#005a6a", "on-secondary-fixed-variant": "#005048", "on-primary": "#ffffff", "primary-container": "#0f766e", "tertiary-container": "#007488", "on-error-container": "#93000a", "surface-container-highest": "#d3e4fe", "background": "#f8f9ff", "on-secondary-fixed": "#00201c", "inverse-on-surface": "#eaf1ff", "primary": "#005c55", "secondary-container": "#6df5e1", "on-surface-variant": "#3e4947", "secondary-fixed-dim": "#4fdbc8", "primary-fixed-dim": "#80d5cb", "on-background": "#0b1c30", "on-error": "#ffffff", "secondary": "#006b5f" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "top-bar-height": "64px", "standard": "8px", "section": "24px", "micro": "4px", "bottom-nav-height": "80px", "margin": "16px", "container-padding": "16px", "separation": "32px", "compact": "12px" }, fontFamily: { "headline-md": ["Inter"], "body-lg": ["Inter"], "label-lg": ["Inter"], "headline-lg": ["Inter"], "display-lg": ["Inter"], "label-sm": ["Inter"], "label-md": ["Inter"], "display-md": ["Inter"], "body-md": ["Inter"], "title-md": ["Inter"], "title-lg": ["Inter"] }, fontSize: { "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }], "body-lg": ["15px", { lineHeight: "22px", fontWeight: "400" }], "label-lg": ["13px", { lineHeight: "18px", fontWeight: "500" }], "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.01em", fontWeight: "600" }], "display-lg": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "500" }], "label-md": ["12px", { lineHeight: "16px", fontWeight: "500" }], "display-md": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }], "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-6 px-margin flex items-center justify-between text-on-surface select-none"><span class="font-label-sm text-label-sm font-semibold tracking-tight">9:41</span><div class="flex items-center gap-micro"><span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span><span class="material-symbols-outlined text-[14px]">wifi</span><span class="material-symbols-outlined text-[14px]">battery_full</span></div></div><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-compact"><img alt="Velora Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1U_e7PpWBZMhC0QZDxmFTC1mWsaPlyrPVhffyLEFzvVpwq7nYSL15xd-pBDXtwgqiI8Mat8L9X10C5Yz4xpZ10BM-NQORtS1UGgnxw_98T813_KeTAqfE1ux_tAgsCXNMsPHeMW1NveXEy4lpaz-c_ZrwCPo_kzLxr39XZlG48M_B2hmsyHSpyAa1xY-2rrVtb9owGEyBdaCzbyWyYS1Cfft0gIyvZXyXCYO0DDVTTR00gVOYhaVkEue1Y"/><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface-variant leading-none">Velora</span><h1 class="font-title-lg text-title-lg text-on-surface leading-tight tracking-tight">Transactions</h1></div></div><div class="flex items-center gap-micro"><button aria-label="Notifications" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full px-margin pt-16 pb-28 bg-surface min-h-screen"><div class="flex flex-col w-full">
-<div class="flex items-center justify-between gap-compact mb-standard">
-<div class="flex items-center gap-micro">
-<span class="font-headline-md text-headline-md text-on-surface">Transactions</span>
-<span class="ml-1 px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant font-semibold">8</span>
-</div>
-<div class="flex items-center gap-micro">
-<button aria-label="Search filter" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" type="button">
-<span class="material-symbols-outlined text-[20px]">tune</span>
-</button>
-<button aria-label="Export statement" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" type="button">
-<span class="material-symbols-outlined text-[20px]">ios_share</span>
-</button>
-</div>
-</div>
-<!-- Financial Reconciliation Summary Strip -->
-<section aria-label="Monthly Reconciliation" class="w-full bg-surface-container-lowest rounded-2xl p-compact shadow-sm mb-section">
-<div class="grid grid-cols-3 divide-x-0 gap-standard">
-<div class="flex flex-col items-center justify-center py-micro px-1 text-center">
-<span class="font-label-sm text-label-sm text-on-surface-variant mb-micro flex items-center gap-0.5">
-<span class="material-symbols-outlined text-[13px] text-primary">arrow_downward</span> Inflow
-        </span>
-<span class="font-title-md text-title-md font-bold text-[#16803C] tracking-tight tabular-nums">+₹60,000</span>
-</div>
-<div class="flex flex-col items-center justify-center py-micro px-1 text-center bg-surface-container-low/50 rounded-xl">
-<span class="font-label-sm text-label-sm text-on-surface-variant mb-micro flex items-center gap-0.5">
-<span class="material-symbols-outlined text-[13px] text-error">arrow_upward</span> Outflow
-        </span>
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tracking-tight tabular-nums">-₹10,000</span>
-</div>
-<div class="flex flex-col items-center justify-center py-micro px-1 text-center">
-<span class="font-label-sm text-label-sm text-on-surface-variant mb-micro flex items-center gap-0.5">
-<span class="material-symbols-outlined text-[13px] text-primary">account_balance_wallet</span> Net
-        </span>
-<span class="font-title-md text-title-md font-bold text-primary tracking-tight tabular-nums">+₹50,000</span>
-</div>
-</div>
-</section>
-<!-- M3 Search Field & Filter Chips -->
-<section class="flex flex-col gap-standard mb-section">
-<div class="relative w-full flex items-center">
-<span class="material-symbols-outlined absolute left-margin text-on-surface-variant text-[20px] pointer-events-none">search</span>
-<input class="w-full h-12 pl-12 pr-margin rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/70 font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm transition-all" id="transactionSearchInput" placeholder="Search by title, category, note..." type="text"/>
-</div>
-<!-- Scrollable Filter Chips -->
-<div class="flex items-center gap-standard overflow-x-auto no-scrollbar py-0.5 -mx-margin px-margin">
-<button class="filter-chip active flex items-center gap-1.5 px-compact py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md shrink-0 shadow-sm transition-transform active:scale-95" type="button">
-<span class="material-symbols-outlined text-[16px]">done</span>
-<span>All</span>
-</button>
-<button class="filter-chip flex items-center gap-1 px-compact py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container font-label-md text-label-md shrink-0 shadow-sm transition-transform active:scale-95" type="button">
-<span class="material-symbols-outlined text-[16px] text-[#16803C]">south_west</span>
-<span>Income</span>
-</button>
-<button class="filter-chip flex items-center gap-1 px-compact py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container font-label-md text-label-md shrink-0 shadow-sm transition-transform active:scale-95" type="button">
-<span class="material-symbols-outlined text-[16px] text-[#C2410C]">north_east</span>
-<span>Expense</span>
-</button>
-<button class="filter-chip flex items-center gap-1 px-compact py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container font-label-md text-label-md shrink-0 shadow-sm transition-transform active:scale-95" type="button">
-<span>🍔 Food</span>
-</button>
-<button class="filter-chip flex items-center gap-1 px-compact py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container font-label-md text-label-md shrink-0 shadow-sm transition-transform active:scale-95" type="button">
-<span>🚕 Transport</span>
-</button>
-<button class="filter-chip flex items-center gap-1 px-compact py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container font-label-md text-label-md shrink-0 shadow-sm transition-transform active:scale-95" type="button">
-<span class="material-symbols-outlined text-[16px]">calendar_today</span>
-<span>Oct 2024</span>
-</button>
-</div>
-</section>
-<!-- Transaction Timeline Groups -->
-<div class="flex flex-col gap-section">
-<!-- Group: TODAY -->
-<section class="flex flex-col gap-standard" data-group="today">
-<div class="flex items-center justify-between px-micro">
-<h2 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Today — 24 Oct</h2>
-<span class="font-label-sm text-label-sm text-on-surface-variant tabular-nums font-medium">3 entries</span>
-</div>
-<div class="flex flex-col gap-standard">
-<!-- 1: Lunch with Team -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center text-xl shrink-0">
-              🍔
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Lunch with Team</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Food · 1:20 PM · Cash</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹350</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Cleared</span>
-</div>
-</article>
-<!-- 2: Uber to Client -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center text-xl shrink-0">
-              🚕
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Uber to Client</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Transport · 11:10 AM · UPI</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹280</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Google Pay</span>
-</div>
-</article>
-<!-- 3: Oct Salary Advance -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center text-xl shrink-0">
-              💼
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Oct Salary Advance</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Income · 9:00 AM · Bank Transfer</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#16803C] tabular-nums">+₹60,000</span>
-<span class="font-label-sm text-label-sm text-[#16803C] font-semibold">Credited</span>
-</div>
-</article>
-</div>
-</section>
-<!-- Group: YESTERDAY -->
-<section class="flex flex-col gap-standard" data-group="yesterday">
-<div class="flex items-center justify-between px-micro">
-<h2 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Yesterday — 23 Oct</h2>
-<span class="font-label-sm text-label-sm text-on-surface-variant tabular-nums font-medium">3 entries</span>
-</div>
-<div class="flex flex-col gap-standard">
-<!-- 4: Grocery Essentials -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-amber-100 flex items-center justify-center text-xl shrink-0">
-              🛒
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Grocery Essentials</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Shopping · 7:45 PM · Card</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹2,450</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">HDFC Debit</span>
-</div>
-</article>
-<!-- 5: Health Supplements -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-teal-100 flex items-center justify-center text-xl shrink-0">
-              💊
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Health Supplements</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Health · 2:15 PM · UPI</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹650</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">PhonePe</span>
-</div>
-</article>
-<!-- 6: Specialty Espresso -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-yellow-100 flex items-center justify-center text-xl shrink-0">
-              ☕
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Specialty Espresso</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Food · 8:30 AM · UPI</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹180</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Paytm</span>
-</div>
-</article>
-</div>
-</section>
-<!-- Group: 22 OCT -->
-<section class="flex flex-col gap-standard" data-group="older">
-<div class="flex items-center justify-between px-micro">
-<h2 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">22 Oct</h2>
-<span class="font-label-sm text-label-sm text-on-surface-variant tabular-nums font-medium">2 entries</span>
-</div>
-<div class="flex flex-col gap-standard">
-<!-- 7: Apartment Maintenance -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-indigo-100 flex items-center justify-center text-xl shrink-0">
-              🏠
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Apartment Maintenance</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Housing · 10:00 AM · Net Banking</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹3,000</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">NEFT Ref #882</span>
-</div>
-</article>
-<!-- 8: Weekend Movie & Snacks -->
-<article class="w-full bg-surface-container-lowest rounded-2xl p-compact flex items-center justify-between shadow-sm active:bg-surface-container-low transition-colors cursor-pointer">
-<div class="flex items-center gap-compact min-w-0">
-<div class="w-11 h-11 rounded-xl bg-purple-100 flex items-center justify-center text-xl shrink-0">
-              🎬
-            </div>
-<div class="flex flex-col min-w-0">
-<span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Weekend Movie &amp; Snacks</span>
-<span class="font-label-md text-label-md text-on-surface-variant truncate">Entertainment · 8:00 PM · Card</span>
-</div>
-</div>
-<div class="flex flex-col items-end shrink-0 pl-compact">
-<span class="font-title-md text-title-md font-bold text-[#C2410C] tabular-nums">-₹950</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">ICICI Coral</span>
-</div>
-</article>
-</div>
-</section>
-</div>
-<!-- End of Feed Tactile Marker -->
-<div class="mt-section mb-compact flex flex-col items-center justify-center gap-micro text-center text-on-surface-variant/60">
-<span class="material-symbols-outlined text-[18px]">verified</span>
-<span class="font-label-sm text-label-sm">October balances reconciled &amp; verified</span>
-</div>
-</div>
-<script>
-  (function() {
-    // Dynamic Filter Chip Toggle
-    const chips = document.querySelectorAll('.filter-chip');
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => {
-          c.classList.remove('bg-primary-container', 'text-on-primary', 'active');
-          c.classList.add('bg-surface-container-lowest', 'text-on-surface-variant');
-        });
-        chip.classList.add('bg-primary-container', 'text-on-primary', 'active');
-        chip.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant');
-      });
-    });
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;font-family:Inter,Roboto,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+  body{overflow:hidden}
 
-    // Client-side quick filter simulation
-    const searchInput = document.getElementById('transactionSearchInput');
-    const cards = document.querySelectorAll('article');
+  .phone{
+    width:100%;
+    max-width:832px;
+    height:100dvh;
+    margin:auto;
+    background:var(--bg);
+    position:relative;
+    overflow:hidden;
+  }
 
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        cards.forEach(card => {
-          const text = card.textContent.toLowerCase();
-          if (text.includes(query)) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    }
+  .app{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+  }
 
-    // Set Transactions destination active in global app shell nav
-    const activeNav = document.querySelector('nav a[data-path="transactions"]');
-    if (activeNav) {
-      const activePill = activeNav.querySelector('.active-pill');
-      if (activePill) {
-        activePill.classList.add('bg-secondary-container', 'text-on-secondary-container');
-      }
-      const navLabel = activeNav.querySelector('.nav-label');
-      if (navLabel) {
-        navLabel.classList.add('text-on-surface', 'font-semibold');
-      }
-    }
-  })();
-</script></main><div class="fixed bottom-24 right-margin z-40"><a aria-label="Record Transaction" class="w-14 h-14 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center shadow-[0_8px_24px_-4px_rgba(15,118,110,0.35)] active:scale-95 transition-transform" data-path="new-transaction" href="#"><span class="material-symbols-outlined text-[28px]">add</span></a></div><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="[&amp;_.active-pill]:bg-secondary-container [&amp;_.active-pill]:text-on-secondary-container [&amp;_.nav-label]:text-on-surface [&amp;_.nav-label]:font-semibold [&amp;_.active-pill]:w-16"><div class="flex justify-around items-center h-20 px-micro"><a class="flex flex-col items-center justify-center gap-micro min-w-[64px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-all group" data-path="dashboard" href="#"><div class="active-pill flex items-center justify-center w-12 h-8 rounded-full transition-all"><span class="material-symbols-outlined text-[22px]">grid_view</span></div><span class="nav-label font-label-md text-label-md transition-colors">Dashboard</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-micro min-w-[64px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-all group [&amp;_.active-pill]:bg-secondary-container [&amp;_.active-pill]:text-on-secondary-container [&amp;_.nav-label]:text-on-surface [&amp;_.nav-label]:font-semibold [&amp;_.active-pill]:w-16" data-path="transactions" href="#"><div class="active-pill flex items-center justify-center w-12 h-8 rounded-full transition-all"><span class="material-symbols-outlined text-[22px]">receipt_long</span></div><span class="nav-label font-label-md text-label-md transition-colors">Transactions</span></a><a class="flex flex-col items-center justify-center gap-micro min-w-[64px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-all group" data-path="analytics" href="#"><div class="active-pill flex items-center justify-center w-12 h-8 rounded-full transition-all"><span class="material-symbols-outlined text-[22px]">insert_chart</span></div><span class="nav-label font-label-md text-label-md transition-colors">Analytics</span></a><a class="flex flex-col items-center justify-center gap-micro min-w-[64px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-all group" data-path="categories" href="#"><div class="active-pill flex items-center justify-center w-12 h-8 rounded-full transition-all"><span class="material-symbols-outlined text-[22px]">category</span></div><span class="nav-label font-label-md text-label-md transition-colors">Categories</span></a></div></nav></body></html>
+  /* Android status bar */
+  .status{
+    height:58px;
+    flex:0 0 58px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 44px 0 45px;
+    font-size:23px;
+    color:#30343a;
+    background:var(--bg);
+  }
+
+  .status-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .signal{
+    display:flex;
+    align-items:flex-end;
+    gap:5px;
+    height:23px;
+  }
+  .signal span{
+    display:block;
+    width:6px;
+    background:#30343a;
+    transform:skew(-16deg);
+  }
+  .signal span:nth-child(1){height:8px}
+  .signal span:nth-child(2){height:14px}
+  .signal span:nth-child(3){height:20px}
+
+  .battery{
+    width:16px;height:24px;border-radius:3px;background:#30343a;position:relative
+  }
+  .battery:before{
+    content:"";position:absolute;top:-4px;left:4px;width:8px;height:3px;border-radius:2px;background:#30343a
+  }
+
+  /* Top app bar */
+  .topbar{
+    min-height:84px;
+    padding:10px 44px 14px;
+    display:flex;
+    align-items:center;
+    background:var(--bg);
+  }
+  .title{
+    font-size:34px;
+    line-height:1.15;
+    font-weight:700;
+    letter-spacing:-.7px;
+  }
+
+  /* Scroll region */
+  .scroll{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    padding:0 36px 154px;
+    scrollbar-width:none;
+  }
+  .scroll::-webkit-scrollbar{display:none}
+
+  /* Search + filter */
+  .search-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin:0 0 28px;
+    position:sticky;
+    top:0;
+    z-index:20;
+    padding:0 0 8px;
+    background:linear-gradient(var(--bg) 82%,rgba(247,250,249,0));
+  }
+
+  .search{
+    flex:1;
+    height:74px;
+    border-radius:38px;
+    background:var(--search);
+    display:flex;
+    align-items:center;
+    padding:0 30px;
+    color:var(--muted);
+    font-size:25px;
+  }
+
+  .search-icon{
+    width:32px;height:32px;margin-right:30px;position:relative;flex:0 0 32px
+  }
+  .search-icon:before{
+    content:"";position:absolute;width:19px;height:19px;border:4px solid #34435f;border-radius:50%;left:0;top:0
+  }
+  .search-icon:after{
+    content:"";position:absolute;width:15px;height:4px;background:#34435f;transform:rotate(45deg);border-radius:2px;left:20px;top:23px
+  }
+
+  .filter{
+    width:82px;height:74px;border-radius:22px;background:#fff;border:2px solid #e2e8ed;
+    display:flex;align-items:center;justify-content:center;position:relative;flex:0 0 82px;
+    box-shadow:0 1px 2px rgba(25,40,50,.02);
+  }
+  .filter .dot{
+    position:absolute;right:4px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--teal);
+    border:2px solid #fff;
+  }
+  .sliders{width:35px;height:35px;position:relative}
+  .sliders i{position:absolute;left:0;right:0;height:3px;background:#41516e;border-radius:2px}
+  .sliders i:nth-child(1){top:7px}
+  .sliders i:nth-child(2){top:17px}
+  .sliders i:nth-child(3){top:27px}
+  .sliders b{position:absolute;width:8px;height:8px;border:3px solid #41516e;border-radius:50%;background:#fff}
+  .sliders b:nth-child(4){left:21px;top:3px}
+  .sliders b:nth-child(5){left:7px;top:13px}
+  .sliders b:nth-child(6){left:24px;top:23px}
+
+  /* Summary cards */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    margin-bottom:40px;
+  }
+  .metric{
+    min-height:136px;
+    border-radius:20px;
+    background:#fff;
+    padding:22px 26px 20px;
+    border:1.5px solid;
+  }
+  .metric.income{border-color:#ccefe1}
+  .metric.expense{border-color:#ffe0d6}
+  .metric.net{border-color:#d2eef0}
+
+  .metric-top{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-size:22px;
+    font-weight:500;
+  }
+  .metric-icon{
+    width:47px;height:47px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:32px;font-weight:600;line-height:1;
+  }
+  .income .metric-icon{background:var(--income-soft);color:var(--income)}
+  .expense .metric-icon{background:var(--expense-soft);color:var(--expense)}
+  .net .metric-icon{background:var(--net-soft);color:var(--net)}
+
+  .metric-value{
+    margin-top:7px;
+    font-size:33px;
+    line-height:1.1;
+    font-weight:700;
+    letter-spacing:-.8px;
+  }
+  .income .metric-value{color:var(--income)}
+  .expense .metric-value{color:var(--expense)}
+  .net .metric-value{color:var(--net)}
+
+  /* Date groups */
+  .date-group{margin-bottom:36px}
+  .date-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6px 18px;
+    font-size:24px;
+  }
+  .date-left{font-weight:600}
+  .count{color:var(--muted);font-weight:400}
+
+  .transaction-card{
+    background:var(--surface);
+    border-radius:20px;
+    overflow:hidden;
+  }
+
+  .transaction{
+    min-height:104px;
+    display:grid;
+    grid-template-columns:88px minmax(0,1fr) auto;
+    align-items:center;
+    column-gap:20px;
+    padding:12px 20px;
+  }
+  .transaction + .transaction{
+    border-top:1px solid var(--line);
+    margin:0 20px;
+    padding-left:0;
+    padding-right:0;
+  }
+
+  .tx-icon{
+    width:76px;height:76px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:34px;font-weight:700;
+  }
+  .blue{background:#edf2ff;color:#2d67db}
+  .orange{background:#fff0eb;color:#ef3f16}
+  .indigo{background:#eee8ff;color:#7138e7}
+  .cyan{background:#e6f7f7;color:#0a999a}
+  .peach{background:#fff0e9;color:#e05b2c}
+  .green{background:#e6f8ef;color:#0a8858}
+  .amber{background:#fff5df;color:#ee9c00}
+
+  .tx-main{min-width:0}
+  .tx-title{
+    font-size:25px;
+    line-height:1.15;
+    font-weight:650;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .tx-meta{
+    margin-top:7px;
+    color:var(--muted);
+    font-size:21px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .amount{
+    font-size:27px;
+    font-weight:600;
+    white-space:nowrap;
+    padding-left:12px;
+  }
+  .expense-amt{color:var(--expense)}
+  .income-amt{color:var(--income)}
+
+  /* Floating action button */
+  .fab{
+    position:fixed;
+    right:max(28px,calc((100vw - 832px)/2 + 28px));
+    bottom:105px;
+    width:78px;height:78px;border:0;border-radius:50%;
+    background:var(--teal);
+    color:#fff;
+    font-size:47px;
+    font-weight:300;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 7px 18px rgba(0,120,112,.24);
+    z-index:50;
+    cursor:pointer;
+  }
+
+  /* Bottom navigation */
+  .bottom-nav{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:112px;
+    background:rgba(255,255,255,.98);
+    border-top:1px solid #eef2f1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    padding:10px 30px 17px;
+    z-index:40;
+  }
+  .nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    color:#63718a;
+    font-size:18px;
+    font-weight:450;
+  }
+  .nav-item.active{color:var(--teal-dark);font-weight:650}
+  .nav-icon{
+    width:54px;height:37px;border-radius:22px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+  }
+  .nav-item.active .nav-icon{background:#e0f5ef}
+  .nav-symbol{
+    width:25px;height:25px;position:relative;
+  }
+
+  /* simple line icons */
+  .grid-icon{
+    display:grid;grid-template-columns:repeat(2,10px);grid-template-rows:repeat(2,10px);gap:5px
+  }
+  .grid-icon i{border:3px solid currentColor;border-radius:2px}
+  .receipt-icon{
+    width:22px;height:26px;border:3px solid currentColor;border-radius:3px;position:relative
+  }
+  .receipt-icon:after{
+    content:"";position:absolute;left:4px;right:4px;top:7px;height:3px;background:currentColor;
+    box-shadow:0 6px 0 currentColor
+  }
+  .chart-icon{
+    border-left:3px solid currentColor;border-bottom:3px solid currentColor;width:25px;height:25px;
+    position:relative
+  }
+  .chart-icon:before{
+    content:"";position:absolute;left:5px;bottom:3px;width:4px;height:11px;background:currentColor;
+    box-shadow:7px -5px 0 currentColor,14px -12px 0 currentColor
+  }
+  .category-icon{
+    width:26px;height:26px;position:relative
+  }
+  .category-icon:before{
+    content:"";position:absolute;left:8px;top:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid currentColor
+  }
+  .category-icon:after{
+    content:"";position:absolute;left:0;bottom:0;width:10px;height:10px;border:3px solid currentColor;border-radius:3px;
+    box-shadow:14px 0 0 -3px var(--bg),14px 0 0 0 currentColor
+  }
+
+  @media (max-width:600px){
+    .status{height:38px;flex-basis:38px;padding:0 18px;font-size:15px}
+    .topbar{min-height:64px;padding:8px 20px 10px}
+    .title{font-size:28px}
+    .scroll{padding:0 16px 135px}
+    .search-row{gap:8px;margin-bottom:20px}
+    .search{height:56px;padding:0 18px;font-size:17px}
+    .search-icon{transform:scale(.75);margin-right:15px}
+    .filter{height:56px;width:56px;flex-basis:56px;border-radius:17px}
+    .summary{gap:8px;margin-bottom:28px}
+    .metric{min-height:108px;padding:14px 12px;border-radius:16px}
+    .metric-top{gap:7px;font-size:16px}
+    .metric-icon{width:36px;height:36px;font-size:23px}
+    .metric-value{font-size:23px;margin-top:8px}
+    .date-group{margin-bottom:25px}
+    .date-head{font-size:17px;padding-bottom:12px}
+    .transaction{min-height:78px;grid-template-columns:54px minmax(0,1fr) auto;column-gap:10px;padding:9px 12px}
+    .transaction + .transaction{margin:0 12px}
+    .tx-icon{width:50px;height:50px;font-size:24px}
+    .tx-title{font-size:17px}
+    .tx-meta{font-size:14px;margin-top:4px}
+    .amount{font-size:18px;padding-left:6px}
+    .fab{width:58px;height:58px;right:20px;bottom:88px;font-size:34px}
+    .bottom-nav{height:82px;padding:7px 12px 9px}
+    .nav-item{font-size:12px;gap:2px}
+    .nav-icon{width:48px;height:30px}
+  }
+</style>
+</head>
+
+<body>
+<div class="phone">
+  <div class="app">
+
+    <div class="status">
+      <div>9:41</div>
+      <div class="status-right">
+        <div class="signal"><span></span><span></span><span></span></div>
+        <div class="battery"></div>
+        <div>100%</div>
+      </div>
+    </div>
+
+    <header class="topbar">
+      <div class="title">Transactions</div>
+    </header>
+
+    <main class="scroll">
+
+      <div class="search-row">
+        <div class="search">
+          <span class="search-icon"></span>
+          <span>Search transactions...</span>
+        </div>
+        <button class="filter" aria-label="Filter transactions">
+          <span class="sliders">
+            <i></i><i></i><i></i>
+            <b></b><b></b><b></b>
+          </span>
+          <span class="dot"></span>
+        </button>
+      </div>
+
+      <section class="summary">
+        <div class="metric income">
+          <div class="metric-top">
+            <div class="metric-icon">↑</div>
+            <div>Income</div>
+          </div>
+          <div class="metric-value">₹1,10,000</div>
+        </div>
+
+        <div class="metric expense">
+          <div class="metric-top">
+            <div class="metric-icon">↓</div>
+            <div>Expenses</div>
+          </div>
+          <div class="metric-value">₹47,348</div>
+        </div>
+
+        <div class="metric net">
+          <div class="metric-top">
+            <div class="metric-icon">=</div>
+            <div>Net</div>
+          </div>
+          <div class="metric-value">₹62,652</div>
+        </div>
+      </section>
+
+      <section class="date-group">
+        <div class="date-head">
+          <div class="date-left">Today&nbsp;&nbsp;•&nbsp;&nbsp;6 Sept 2024</div>
+          <div class="count">2 entries</div>
+        </div>
+        <div class="transaction-card">
+          <div class="transaction">
+            <div class="tx-icon blue">⌁</div>
+            <div class="tx-main">
+              <div class="tx-title">JioFiber Broadband</div>
+              <div class="tx-meta">Bills&nbsp;&nbsp;•&nbsp;&nbsp;8:30 PM&nbsp;&nbsp;•&nbsp;&nbsp;Credit Card</div>
+            </div>
+            <div class="amount expense-amt">−₹999</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-icon orange">🍴</div>
+            <div class="tx-main">
+              <div class="tx-title">Swiggy Dinner</div>
+              <div class="tx-meta">Food&nbsp;&nbsp;•&nbsp;&nbsp;1:20 PM&nbsp;&nbsp;•&nbsp;&nbsp;UPI</div>
+            </div>
+            <div class="amount expense-amt">−₹450</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="date-group">
+        <div class="date-head">
+          <div class="date-left">Yesterday&nbsp;&nbsp;•&nbsp;&nbsp;5 Sept 2024</div>
+          <div class="count">2 entries</div>
+        </div>
+        <div class="transaction-card">
+          <div class="transaction">
+            <div class="tx-icon blue">ϟ</div>
+            <div class="tx-main">
+              <div class="tx-title">Electricity Bill</div>
+              <div class="tx-meta">Bills&nbsp;&nbsp;•&nbsp;&nbsp;6:00 PM&nbsp;&nbsp;•&nbsp;&nbsp;UPI</div>
+            </div>
+            <div class="amount expense-amt">−₹1,500</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-icon indigo">♧</div>
+            <div class="tx-main">
+              <div class="tx-title">Amazon</div>
+              <div class="tx-meta">Shopping&nbsp;&nbsp;•&nbsp;&nbsp;7:20 PM&nbsp;&nbsp;•&nbsp;&nbsp;UPI</div>
+            </div>
+            <div class="amount expense-amt">−₹2,499</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="date-group">
+        <div class="date-head">
+          <div class="date-left">4 Sept 2024</div>
+          <div class="count">2 entries</div>
+        </div>
+        <div class="transaction-card">
+          <div class="transaction">
+            <div class="tx-icon cyan">▣</div>
+            <div class="tx-main">
+              <div class="tx-title">Ola Ride</div>
+              <div class="tx-meta">Transport&nbsp;&nbsp;•&nbsp;&nbsp;5:40 PM&nbsp;&nbsp;•&nbsp;&nbsp;UPI</div>
+            </div>
+            <div class="amount expense-amt">−₹320</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-icon peach">⌂</div>
+            <div class="tx-main">
+              <div class="tx-title">Rent</div>
+              <div class="tx-meta">Home&nbsp;&nbsp;•&nbsp;&nbsp;9:00 AM&nbsp;&nbsp;•&nbsp;&nbsp;Bank Transfer</div>
+            </div>
+            <div class="amount expense-amt">−₹15,000</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="date-group">
+        <div class="date-head">
+          <div class="date-left">3 Sept 2024</div>
+          <div class="count">1 entry</div>
+        </div>
+        <div class="transaction-card">
+          <div class="transaction">
+            <div class="tx-icon green">▣</div>
+            <div class="tx-main">
+              <div class="tx-title">Salary</div>
+              <div class="tx-meta">Income&nbsp;&nbsp;•&nbsp;&nbsp;9:00 AM&nbsp;&nbsp;•&nbsp;&nbsp;Bank Transfer</div>
+            </div>
+            <div class="amount income-amt">+₹50,000</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="date-group">
+        <div class="date-head">
+          <div class="date-left">2 Sept 2024</div>
+          <div class="count">1 entry</div>
+        </div>
+        <div class="transaction-card">
+          <div class="transaction">
+            <div class="tx-icon amber">🛒</div>
+            <div class="tx-main">
+              <div class="tx-title">BigBasket</div>
+              <div class="tx-meta">Groceries&nbsp;&nbsp;•&nbsp;&nbsp;7:10 PM&nbsp;&nbsp;•&nbsp;&nbsp;UPI</div>
+            </div>
+            <div class="amount expense-amt">−₹1,230</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <button class="fab" aria-label="Add transaction">+</button>
+
+    <nav class="bottom-nav">
+      <div class="nav-item">
+        <div class="nav-icon"><div class="grid-icon"><i></i><i></i><i></i><i></i></div></div>
+        <div>Dashboard</div>
+      </div>
+
+      <div class="nav-item active">
+        <div class="nav-icon"><div class="receipt-icon"></div></div>
+        <div>Transactions</div>
+      </div>
+
+      <div class="nav-item">
+        <div class="nav-icon"><div class="chart-icon"></div></div>
+        <div>Analytics</div>
+      </div>
+
+      <div class="nav-item">
+        <div class="nav-icon"><div class="category-icon"></div></div>
+        <div>Categories</div>
+      </div>
+    </nav>
+
+  </div>
+</div>
+</body>
+</html>
