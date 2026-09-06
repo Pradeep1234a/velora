@@ -1,6 +1,10 @@
 # 📱 Velora Tracker
 
 <p align="center">
+  <img src="branding/ic_launcher-playstore.png" width="128" height="128" alt="Velora Tracker Logo" style="border-radius: 28px;" />
+  <br/>
+  <b>Intelligent Personal Finance & Day-to-Day Expense Tracker</b>
+  <br/><br/>
   <img src="https://img.shields.io/badge/Velora_Tracker-Android_App-1B6B52?style=for-the-badge&logo=android&logoColor=white" alt="Velora Tracker" />
   <br/>
   <a href="https://github.com/Pradeep1234a/velora/releases/latest">
