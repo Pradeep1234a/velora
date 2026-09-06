@@ -51,7 +51,7 @@ fun VeloraNavHost(application: Application) {
     )
 
     val showBottomBar = currentRoute in mainTabs
-    val showFab = currentRoute == VeloraDestination.Dashboard.route || currentRoute == VeloraDestination.Transactions.route
+    val showFab = currentRoute == VeloraDestination.Transactions.route
 
     Scaffold(
         bottomBar = {
@@ -115,6 +115,30 @@ fun VeloraNavHost(application: Application) {
                     },
                     onSettingsClick = {
                         navController.navigate(VeloraDestination.Settings.route)
+                    },
+                    onAddExpense = {
+                        navController.navigate(VeloraDestination.AddTransaction.route)
+                    },
+                    onAddIncome = {
+                        navController.navigate(VeloraDestination.AddTransaction.route)
+                    },
+                    onNavigateToAnalytics = {
+                        navController.navigate(VeloraDestination.Analytics.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    onNavigateToCategories = {
+                        navController.navigate(VeloraDestination.Categories.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
             }
