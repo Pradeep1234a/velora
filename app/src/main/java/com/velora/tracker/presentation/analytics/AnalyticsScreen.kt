@@ -434,7 +434,6 @@ fun AnalyticsScreen(
                                         barColor = MaterialTheme.colorScheme.primary
                                     )
                                 }
-                                }
                             }
                         }
                     }
