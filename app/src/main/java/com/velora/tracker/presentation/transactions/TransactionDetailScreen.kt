@@ -1,15 +1,23 @@
 package com.velora.tracker.presentation.transactions
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.velora.tracker.domain.model.CategorySource
 import com.velora.tracker.domain.model.TransactionType
@@ -67,61 +75,127 @@ fun TransactionDetailScreen(
             }
         } else if (transaction != null) {
             val t = transaction!!
+            val isIncome = t.type == TransactionType.INCOME
+            val isExpense = t.type == TransactionType.EXPENSE
+            val accentColor = if (isIncome) Color(0xFF16803C) else Color(0xFFC2410C)
+            val badgeBg = if (isIncome) Color(0xFFDCFCE7) else Color(0xFFFFEDD5)
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
                     .verticalScroll(rememberScrollState())
-                    .padding(Spacing.medium),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                VeloraAmountText(
-                    amountMinorUnits = t.amountMinorUnits,
-                    isExpense = t.type == TransactionType.EXPENSE,
-                    currencySymbol = currencySymbol,
-                    style = MaterialTheme.typography.displaySmall
-                )
-                
-                Spacer(modifier = Modifier.height(Spacing.small))
-                
-                AssistChip(
-                    onClick = { },
-                    label = { Text(if (t.type == TransactionType.INCOME) "Income" else "Expense") }
-                )
-                
-                Spacer(modifier = Modifier.height(Spacing.medium))
-                HorizontalDivider()
-                Spacer(modifier = Modifier.height(Spacing.medium))
-                
-                DetailRow("Title / Merchant", t.title)
-                
-                val catName = category?.name ?: t.categoryName
-                val catIcon = category?.iconName ?: t.categoryIconName
-                val catColor = category?.colorHex ?: t.categoryColorHex
-                if (catName.isNotEmpty()) {
-                    DetailRow("Category") {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            VeloraCategoryIcon(iconName = catIcon, colorHex = catColor, size = 32.dp)
-                            Spacer(modifier = Modifier.width(Spacing.small))
-                            Text(catName, style = MaterialTheme.typography.bodyLarge)
+                // Hero Amount Card
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    shadowElevation = 1.dp
+                ) {
+                    Column(
+                        modifier = Modifier.padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(100.dp),
+                            color = badgeBg
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Icon(
+                                    imageVector = if (isIncome) Icons.Filled.ArrowUpward else Icons.Filled.ArrowDownward,
+                                    contentDescription = null,
+                                    tint = accentColor,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Text(
+                                    text = if (isIncome) "Income" else "Expense",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = accentColor
+                                )
+                            }
                         }
+
+                        VeloraAmountText(
+                            amountMinorUnits = t.amountMinorUnits,
+                            isExpense = isExpense,
+                            currencySymbol = currencySymbol,
+                            style = MaterialTheme.typography.displayMedium
+                        )
+                        
+                        Text(
+                            text = t.title,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
-                
-                DetailRow("Date", t.dateTime.format(dateFormatter))
-                DetailRow("Time", t.dateTime.format(timeFormatter))
-                DetailRow("Payment Method", t.paymentMethod.displayName())
-                
-                if (t.notes.isNotEmpty()) {
-                    DetailRow("Notes", t.notes)
+
+                // Details Card
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    shadowElevation = 1.dp
+                ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        Text(
+                            text = "TRANSACTION DETAILS",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        val catName = category?.name ?: t.categoryName
+                        val catIcon = category?.iconName ?: t.categoryIconName
+                        val catColor = category?.colorHex ?: t.categoryColorHex
+                        if (catName.isNotEmpty()) {
+                            DetailItem(label = "Category") {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    VeloraCategoryIcon(iconName = catIcon, colorHex = catColor, size = 28.dp)
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = catName,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontWeight = FontWeight.Medium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
+                            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+                        }
+
+                        DetailItem(label = "Date & Time", value = "${t.dateTime.format(dateFormatter)} at ${t.dateTime.format(timeFormatter)}")
+                        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+
+                        DetailItem(label = "Payment Method", value = t.paymentMethod.displayName())
+                        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+
+                        if (t.notes.isNotEmpty()) {
+                            DetailItem(label = "Notes", value = t.notes)
+                            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+                        }
+
+                        val sourceText = when (t.categorySource) {
+                            CategorySource.AI -> "AI suggested (${((t.aiConfidence ?: 0.9f) * 100).toInt()}% confidence)"
+                            CategorySource.RULE -> "Auto-categorized (Rule-based)"
+                            else -> "Manual"
+                        }
+                        DetailItem(label = "Categorization", value = sourceText)
+                    }
                 }
-                
-                val sourceText = when(t.categorySource) {
-                    CategorySource.AI -> "AI suggested (${((t.aiConfidence ?: 0.9f) * 100).toInt()}% confidence)"
-                    CategorySource.RULE -> "Auto-categorized (Rule-based)"
-                    else -> "Manual"
-                }
-                DetailRow("Category Source", sourceText)
             }
         }
 
@@ -146,25 +220,29 @@ fun TransactionDetailScreen(
 }
 
 @Composable
-fun DetailRow(label: String, value: String) {
-    DetailRow(label) {
-        Text(text = value, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+fun DetailItem(label: String, value: String) {
+    DetailItem(label) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
 
 @Composable
-fun DetailRow(label: String, content: @Composable () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = Spacing.small)
+fun DetailItem(label: String, content: @Composable () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Spacer(modifier = Modifier.height(4.dp))
         content()
     }
 }

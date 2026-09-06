@@ -15,6 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.velora.tracker.ui.theme.veloraColors
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+
 @Composable
 fun VeloraMetricCard(
     label: String,
@@ -23,40 +28,49 @@ fun VeloraMetricCard(
     currencySymbol: String = "₹",
     modifier: Modifier = Modifier
 ) {
-    val containerColor = if (isIncome) MaterialTheme.veloraColors.incomeContainer else MaterialTheme.veloraColors.expenseContainer
+    val cardBg = if (isIncome) MaterialTheme.veloraColors.incomeCard else MaterialTheme.veloraColors.expenseCard
+    val badgeBg = if (isIncome) MaterialTheme.veloraColors.incomeContainer else MaterialTheme.veloraColors.expenseContainer
     val contentColor = if (isIncome) MaterialTheme.veloraColors.income else MaterialTheme.veloraColors.expense
+    val labelColor = if (isIncome) MaterialTheme.veloraColors.incomeLabel else MaterialTheme.veloraColors.expenseLabel
     val icon = if (isIncome) Icons.Filled.ArrowUpward else Icons.Filled.ArrowDownward
 
     Card(
         modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
-            containerColor = containerColor
+            containerColor = cardBg
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(badgeBg),
+                contentAlignment = Alignment.Center
+            ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = contentColor,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    modifier = Modifier.size(18.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = MoneyFormatter.formatCompact(amountMinorUnits, currencySymbol),
-                style = MaterialTheme.typography.headlineSmall,
+                text = "${if (isIncome) "+" else "-"}${MoneyFormatter.formatCompact(amountMinorUnits, currencySymbol)}",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
                 color = contentColor
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = labelColor
             )
         }
     }

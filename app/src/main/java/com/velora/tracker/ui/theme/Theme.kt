@@ -48,7 +48,12 @@ private val VeloraLightColorScheme = lightColorScheme(
     inverseOnSurface = inverseOnSurfaceLight,
     inversePrimary = inversePrimaryLight,
     scrim = scrimLight,
-    surfaceTint = surfaceTintLight
+    surfaceTint = surfaceTintLight,
+    surfaceContainerLowest = surfaceContainerLowestLight,
+    surfaceContainerLow = surfaceContainerLowLight,
+    surfaceContainer = surfaceContainerLight,
+    surfaceContainerHigh = surfaceContainerHighLight,
+    surfaceContainerHighest = surfaceContainerHighestLight
 )
 
 private val VeloraDarkColorScheme = darkColorScheme(
@@ -80,14 +85,23 @@ private val VeloraDarkColorScheme = darkColorScheme(
     inverseOnSurface = inverseOnSurfaceDark,
     inversePrimary = inversePrimaryDark,
     scrim = scrimDark,
-    surfaceTint = surfaceTintDark
+    surfaceTint = surfaceTintDark,
+    surfaceContainerLowest = surfaceContainerLowestDark,
+    surfaceContainerLow = surfaceContainerLowDark,
+    surfaceContainer = surfaceContainerDark,
+    surfaceContainerHigh = surfaceContainerHighDark,
+    surfaceContainerHighest = surfaceContainerHighestDark
 )
 
 data class VeloraColors(
     val income: Color,
     val incomeContainer: Color,
+    val incomeCard: Color,
+    val incomeLabel: Color,
     val expense: Color,
     val expenseContainer: Color,
+    val expenseCard: Color,
+    val expenseLabel: Color,
     val isDark: Boolean
 )
 
@@ -95,8 +109,12 @@ val LocalVeloraColors = staticCompositionLocalOf {
     VeloraColors(
         income = VeloraFinancialColors.incomeLightColor,
         incomeContainer = VeloraFinancialColors.incomeContainerLight,
+        incomeCard = VeloraFinancialColors.incomeCardLight,
+        incomeLabel = VeloraFinancialColors.incomeLabelLight,
         expense = VeloraFinancialColors.expenseLightColor,
         expenseContainer = VeloraFinancialColors.expenseContainerLight,
+        expenseCard = VeloraFinancialColors.expenseCardLight,
+        expenseLabel = VeloraFinancialColors.expenseLabelLight,
         isDark = false
     )
 }
@@ -128,16 +146,24 @@ fun VeloraTheme(
         VeloraColors(
             income = VeloraFinancialColors.incomeDarkColor,
             incomeContainer = VeloraFinancialColors.incomeContainerDark,
+            incomeCard = VeloraFinancialColors.incomeCardDark,
+            incomeLabel = VeloraFinancialColors.incomeLabelDark,
             expense = VeloraFinancialColors.expenseDarkColor,
             expenseContainer = VeloraFinancialColors.expenseContainerDark,
+            expenseCard = VeloraFinancialColors.expenseCardDark,
+            expenseLabel = VeloraFinancialColors.expenseLabelDark,
             isDark = true
         )
     } else {
         VeloraColors(
             income = VeloraFinancialColors.incomeLightColor,
             incomeContainer = VeloraFinancialColors.incomeContainerLight,
+            incomeCard = VeloraFinancialColors.incomeCardLight,
+            incomeLabel = VeloraFinancialColors.incomeLabelLight,
             expense = VeloraFinancialColors.expenseLightColor,
             expenseContainer = VeloraFinancialColors.expenseContainerLight,
+            expenseCard = VeloraFinancialColors.expenseCardLight,
+            expenseLabel = VeloraFinancialColors.expenseLabelLight,
             isDark = false
         )
     }

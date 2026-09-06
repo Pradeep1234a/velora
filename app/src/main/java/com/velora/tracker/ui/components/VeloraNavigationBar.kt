@@ -16,13 +16,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.ui.unit.dp
+
 @Composable
 fun VeloraNavigationBar(
     currentRoute: String?,
     onNavigate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    NavigationBar(modifier = modifier) {
+    NavigationBar(
+        modifier = modifier.height(80.dp),
+        containerColor = MaterialTheme.colorScheme.surface,
+        tonalElevation = 0.dp
+    ) {
         val items = listOf(
             Triple("dashboard", "Dashboard", Icons.Filled.Dashboard to Icons.Outlined.Dashboard),
             Triple("transactions", "Transactions", Icons.Filled.ReceiptLong to Icons.Outlined.ReceiptLong),
@@ -41,7 +51,19 @@ fun VeloraNavigationBar(
                         contentDescription = label
                     )
                 },
-                label = { Text(label) }
+                label = {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
         }
     }

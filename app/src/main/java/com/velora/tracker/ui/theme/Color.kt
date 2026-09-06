@@ -62,16 +62,38 @@ val inversePrimaryDark = Color(0xFF005C55)
 val scrimDark = Color(0xFF000000)
 val surfaceTintDark = Color(0xFF80D5CB)
 
+val surfaceContainerLowestLight = Color(0xFFFFFFFF)
+val surfaceContainerLowLight = Color(0xFFEFF4FF)
+val surfaceContainerLight = Color(0xFFE5EEFF)
+val surfaceContainerHighLight = Color(0xFFDCE9FF)
+val surfaceContainerHighestLight = Color(0xFFD3E4FE)
+
+val surfaceContainerLowestDark = Color(0xFF0B1110)
+val surfaceContainerLowDark = Color(0xFF101917)
+val surfaceContainerDark = Color(0xFF131B19)
+val surfaceContainerHighDark = Color(0xFF1A2624)
+val surfaceContainerHighestDark = Color(0xFF21312E)
+
 object VeloraFinancialColors {
-    val incomeLightColor = Color(0xFF2E7D32)
-    val incomeContainerLight = Color(0xFFE8F5E9)
-    val expenseLightColor = Color(0xFFC62828)
-    val expenseContainerLight = Color(0xFFFFEBEE)
+    val incomeLightColor = Color(0xFF16803C)
+    val incomeContainerLight = Color(0xFFDCFCE7)
+    val incomeCardLight = Color(0xFFF0FDF4)
+    val incomeLabelLight = Color(0xFF15803D)
     
-    val incomeDarkColor = Color(0xFF81C784)
-    val incomeContainerDark = Color(0xFF1B3A1E)
-    val expenseDarkColor = Color(0xFFEF9A9A)
-    val expenseContainerDark = Color(0xFF3E1C1C)
+    val expenseLightColor = Color(0xFFC2410C)
+    val expenseContainerLight = Color(0xFFFFEDD5)
+    val expenseCardLight = Color(0xFFFFF7ED)
+    val expenseLabelLight = Color(0xFF9A3412)
+    
+    val incomeDarkColor = Color(0xFF4ADE80)
+    val incomeContainerDark = Color(0xFF052E16)
+    val incomeCardDark = Color(0xFF0E2218)
+    val incomeLabelDark = Color(0xFF86EFAC)
+    
+    val expenseDarkColor = Color(0xFFFB923C)
+    val expenseContainerDark = Color(0xFF431407)
+    val expenseCardDark = Color(0xFF28140E)
+    val expenseLabelDark = Color(0xFFFDBA74)
 }
 
 object VeloraCategoryColors {

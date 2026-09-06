@@ -62,130 +62,208 @@ fun SettingsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(bottom = 32.dp)
         ) {
-            item { VeloraSectionHeader(title = "Appearance") }
             item {
-                ListItem(
-                    headlineContent = { Text("Theme") },
-                    supportingContent = {
-                        Row(modifier = Modifier.padding(top = 8.dp)) {
-                            FilterChip(
-                                selected = themeMode == 0,
-                                onClick = { viewModel.setThemeMode(0) },
-                                label = { Text("System") },
-                                modifier = Modifier.padding(end = 8.dp)
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = "APPEARANCE",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        shadowElevation = 0.5.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                text = "Theme",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
-                            FilterChip(
-                                selected = themeMode == 1,
-                                onClick = { viewModel.setThemeMode(1) },
-                                label = { Text("Light") },
-                                modifier = Modifier.padding(end = 8.dp)
+                            Row(modifier = Modifier.padding(top = 10.dp)) {
+                                FilterChip(
+                                    selected = themeMode == 0,
+                                    onClick = { viewModel.setThemeMode(0) },
+                                    label = { Text("System") },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                FilterChip(
+                                    selected = themeMode == 1,
+                                    onClick = { viewModel.setThemeMode(1) },
+                                    label = { Text("Light") },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                FilterChip(
+                                    selected = themeMode == 2,
+                                    onClick = { viewModel.setThemeMode(2) },
+                                    label = { Text("Dark") }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            item {
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = "FINANCE",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        shadowElevation = 0.5.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column {
+                            ListItem(
+                                headlineContent = { Text("Currency", fontWeight = FontWeight.Medium) },
+                                supportingContent = { Text("Current: $currencySymbol") },
+                                modifier = Modifier.clickable { viewModel.showCurrencySelector() }
                             )
-                            FilterChip(
-                                selected = themeMode == 2,
-                                onClick = { viewModel.setThemeMode(2) },
-                                label = { Text("Dark") }
+                            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+                            ListItem(
+                                headlineContent = { Text("Opening Balance", fontWeight = FontWeight.Medium) },
+                                supportingContent = { 
+                                    Text("Current: " + MoneyFormatter.format(openingBalance, currencySymbol, showSign = false))
+                                },
+                                modifier = Modifier.clickable { viewModel.showOpeningBalanceEditor() }
+                            )
+                            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+                            ListItem(
+                                headlineContent = { Text("Categories", fontWeight = FontWeight.Medium) },
+                                supportingContent = { Text("Manage income and expense categories") },
+                                modifier = Modifier.clickable { onNavigateToCategories() }
                             )
                         }
                     }
-                )
+                }
             }
 
-            item { VeloraSectionHeader(title = "Finance") }
             item {
-                ListItem(
-                    headlineContent = { Text("Currency") },
-                    supportingContent = { Text("Current: $currencySymbol") },
-                    modifier = Modifier.clickable { viewModel.showCurrencySelector() }
-                )
-            }
-            item {
-                ListItem(
-                    headlineContent = { Text("Opening Balance") },
-                    supportingContent = { 
-                        Text("Current: " + MoneyFormatter.format(openingBalance, currencySymbol, showSign = false))
-                    },
-                    modifier = Modifier.clickable { viewModel.showOpeningBalanceEditor() }
-                )
-            }
-            item {
-                ListItem(
-                    headlineContent = { Text("Categories") },
-                    supportingContent = { Text("Manage income and expense categories") },
-                    modifier = Modifier.clickable { onNavigateToCategories() }
-                )
-            }
-
-            item { VeloraSectionHeader(title = "Intelligence") }
-            item {
-                ListItem(
-                    headlineContent = { Text("AI Categorization") },
-                    supportingContent = { Text("Automatically suggest categories based on transaction details") },
-                    trailingContent = {
-                        Switch(
-                            checked = isAiEnabled,
-                            onCheckedChange = { viewModel.toggleAiCategorization() }
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = "INTELLIGENCE",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        shadowElevation = 0.5.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        ListItem(
+                            headlineContent = { Text("AI Categorization", fontWeight = FontWeight.Medium) },
+                            supportingContent = { Text("Automatically suggest categories based on transaction details") },
+                            trailingContent = {
+                                Switch(
+                                    checked = isAiEnabled,
+                                    onCheckedChange = { viewModel.toggleAiCategorization() },
+                                    colors = SwitchDefaults.colors(
+                                        checkedThumbColor = androidx.compose.ui.graphics.Color.White,
+                                        checkedTrackColor = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                            }
                         )
                     }
-                )
+                }
             }
 
-            item { VeloraSectionHeader(title = "Data") }
             item {
-                ListItem(
-                    headlineContent = { Text("Export Transactions") },
-                    supportingContent = { Text("Export to CSV") },
-                    modifier = Modifier.clickable {
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar("Coming soon")
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = "DATA",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        shadowElevation = 0.5.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column {
+                            ListItem(
+                                headlineContent = { Text("Export Transactions", fontWeight = FontWeight.Medium) },
+                                supportingContent = { Text("Export to CSV") },
+                                modifier = Modifier.clickable {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("Coming soon")
+                                    }
+                                }
+                            )
+                            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
+                            ListItem(
+                                headlineContent = { Text("Import Transactions", fontWeight = FontWeight.Medium) },
+                                supportingContent = { Text("Import from CSV") },
+                                modifier = Modifier.clickable {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("Coming soon")
+                                    }
+                                }
+                            )
                         }
                     }
-                )
-            }
-            item {
-                ListItem(
-                    headlineContent = { Text("Import Transactions") },
-                    supportingContent = { Text("Import from CSV") },
-                    modifier = Modifier.clickable {
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar("Coming soon")
-                        }
-                    }
-                )
+                }
             }
 
-            item { VeloraSectionHeader(title = "About") }
             item {
-                Column(
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    shadowElevation = 0.5.dp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = Spacing.medium),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(horizontal = 16.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_velora_logo),
-                        contentDescription = "Velora Logo",
+                    Column(
                         modifier = Modifier
-                            .size(72.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                    )
-                    Spacer(modifier = Modifier.height(Spacing.small))
-                    Text(
-                        text = "Velora Tracker",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Intelligent Personal Finance & Expense Tracker",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = "Version 1.0.0",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                            .fillMaxWidth()
+                            .padding(vertical = 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_velora_logo),
+                            contentDescription = "Velora Logo",
+                            modifier = Modifier
+                                .size(72.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = "Velora Tracker",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Intelligent Personal Finance & Expense Tracker",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = "Version 1.0.0",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                    }
                 }
             }
         }
