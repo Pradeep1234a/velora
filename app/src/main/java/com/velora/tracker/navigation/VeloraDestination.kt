@@ -1,6 +1,7 @@
 package com.velora.tracker.navigation
 
 sealed class VeloraDestination(val route: String) {
+    data object Splash : VeloraDestination("splash")
     data object Dashboard : VeloraDestination("dashboard")
     data object Transactions : VeloraDestination("transactions")
     data object Analytics : VeloraDestination("analytics")

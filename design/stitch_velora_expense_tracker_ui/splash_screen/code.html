@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Velora Tracker — Splash Screen Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      background-color: #001219;
+      color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      user-select: none;
+    }
+    .velora-canvas-bg {
+      background: radial-gradient(circle at 65% 25%, #003840 0%, #001F2A 50%, #001219 100%);
+    }
+    .wordmark-font {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      letter-spacing: -0.03em;
+    }
+    .glow-radial {
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.08) 45%, rgba(0, 31, 42, 0) 70%);
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      background: #1E293B;
+      height: 4px;
+      border-radius: 2px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: #10B981;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen velora-canvas-bg relative">
+
+  <!-- Android Phone Mockup Frame / Viewport -->
+  <div class="relative w-full max-w-[420px] h-[860px] max-h-[92vh] rounded-[48px] overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.85)] border border-slate-800/80 bg-[#001F2A] flex flex-col items-center justify-between">
+    
+    <!-- Ambient Radial Glow layer -->
+    <div id="ambientGlow" class="absolute inset-0 glow-radial opacity-0 transition-opacity duration-1000 pointer-events-none"></div>
+
+    <!-- Android Status Bar Simulation (Insets) -->
+    <div class="w-full pt-4 px-7 flex items-center justify-between text-xs font-semibold text-slate-400 z-20 select-none">
+      <span>9:41</span>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18.23c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l.62-.62C7.93 20.26 9.88 21 12 21s4.07-.74 5.61-1.97l.62.62c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-.62-.62C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+
+    <!-- Center Stage: The Logo Assembly Canvas -->
+    <div class="flex-1 w-full flex flex-col items-center justify-center relative z-10">
+      
+      <!-- Assembly Canvas (240x240 responsive bounding box) -->
+      <div class="relative w-[240px] h-[240px] flex items-center justify-center">
+        
+        <!-- SVG Canvas for Rendered Logo Elements -->
+        <svg id="logoSvg" class="w-[240px] h-[240px] overflow-visible" viewBox="0 0 240 240">
+          <defs>
+            <linearGradient id="gradVStem" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00F5D4" />
+              <stop offset="35%" stop-color="#10B981" />
+              <stop offset="65%" stop-color="#00B4D8" />
+              <stop offset="100%" stop-color="#1D4ED8" />
+            </linearGradient>
+
+            <linearGradient id="gradLeafUpper" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0077B6" />
+              <stop offset="30%" stop-color="#00B4D8" />
+              <stop offset="70%" stop-color="#10B981" />
+              <stop offset="100%" stop-color="#86EFAC" />
+            </linearGradient>
+
+            <linearGradient id="gradLeafLower" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="#0077B6" />
+              <stop offset="60%" stop-color="#00B4D8" />
+              <stop offset="100%" stop-color="#2563EB" />
+            </linearGradient>
+
+            <filter id="subtleBloom" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- Group of dynamically animated elements -->
+          <g id="elementsLayer"></g>
+
+          <!-- Consolidated Complete Silhouette (revealed at stabilization) -->
+          <g id="finalLogoGroup" class="opacity-0 transition-opacity duration-500 pointer-events-none">
+            <path d="M 44,58 C 44,52 49,47 55,47 L 78,47 C 84,47 88,52 90,57 L 132,156 C 134,162 130,169 123,171 L 115,173 C 102,176 89,166 84,154 L 46,65 C 44,63 44,60 44,58 Z" 
+                  fill="url(#gradVStem)" />
+            
+            <path d="M 84,154 C 89,166 102,176 115,173 L 123,171 C 131,168 138,172 141,180 C 144,188 139,197 131,199 L 121,201 C 98,206 75,191 68,168 L 44,98 L 68,154 Z"
+                  fill="#1D4ED8" />
+
+            <path d="M 132,156 C 122,125 128,88 152,60 C 172,36 198,24 212,22 C 214,22 215,24 215,26 C 212,48 198,82 174,108 C 158,126 144,144 132,156 Z"
+                  fill="url(#gradLeafUpper)" />
+
+            <path d="M 136,156 C 146,142 165,134 186,134 C 193,134 196,138 194,144 C 188,162 172,178 150,188 C 142,192 135,188 134,181 C 133,172 134,163 136,156 Z"
+                  fill="url(#gradLeafLower)" />
+          </g>
+        </svg>
+
+      </div>
+
+      <!-- Brand Wordmark & Tagline: Subtly revealed after logo assembly -->
+      <div id="wordmarkBlock" class="mt-8 flex flex-col items-center opacity-0 transform translate-y-3 transition-all duration-700">
+        <h1 class="text-3xl font-extrabold text-white tracking-tight wordmark-font flex items-center gap-1">
+          Velora
+          <span class="w-2 h-2 rounded-full bg-[#10B981] inline-block mb-1"></span>
+        </h1>
+        <p class="text-xs font-medium text-slate-400 mt-1 tracking-wider uppercase">Intelligent Personal Finance</p>
+      </div>
+
+    </div>
+
+    <!-- Safe Area Footer simulation -->
+    <div class="w-full pb-6 px-8 flex items-center justify-between text-[11px] text-slate-500 z-20">
+      <span id="timingBadge" class="font-mono bg-slate-800/80 px-2.5 py-1 rounded-full text-slate-300">0ms / 2400ms</span>
+      <span class="flex items-center gap-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>Stitch Splash Engine</span>
+      </span>
+    </div>
+
+  </div>
+
+  <!-- Interactive Control Panel (Floating Deck) -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[560px] bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-4 shadow-2xl flex flex-col gap-3 z-50">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <button id="btnPlay" class="w-10 h-10 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 transition-all flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-emerald-500/20">
+          <svg id="playIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button id="btnRestart" class="w-10 h-10 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all flex items-center justify-center text-slate-300">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+        </button>
+        <span id="phaseLabel" class="text-xs font-semibold text-slate-300 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/50">
+          Frame 1: Initial Seeds
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3 text-xs text-slate-400">
+        <label class="flex items-center gap-1.5 cursor-pointer">
+          <input type="checkbox" id="chkReducedMotion" class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+          <span>Reduced Motion</span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer">
+          <input type="checkbox" id="chkShowWireframes" class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+          <span>Inspect Elements</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Scrubber Slider -->
+    <div class="flex items-center gap-3">
+      <span class="text-[10px] font-mono text-slate-500">0ms</span>
+      <input type="range" id="timeScrubber" min="0" max="2400" value="0" step="10" class="flex-1 cursor-pointer">
+      <span class="text-[10px] font-mono text-slate-500">2400ms</span>
+    </div>
+  </div>
+
+  <script>
+    const LOGO_ELEMENTS = [
+      {
+        id: 'v_cap_top',
+        type: 'V_STEM',
+        startX: 40, startY: 20,
+        endX: 62, endY: 52,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -18,
+        delay: 50, duration: 800,
+        fill: '#00F5D4',
+        d: 'M -14,-6 C -14,-10 -9,-14 -3,-14 L 14,-14 C 18,-14 20,-10 20,-6 L 14,8 L -12,8 Z'
+      },
+      {
+        id: 'v_stem_upper_outer',
+        type: 'V_STEM',
+        startX: 15, startY: 70,
+        endX: 52, endY: 75,
+        startScale: 0.3, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 12,
+        delay: 120, duration: 850,
+        fill: '#10B981',
+        d: 'M -10,-15 L 12,-10 L 4,16 L -10,12 Z'
+      },
+      {
+        id: 'v_stem_upper_inner',
+        type: 'V_STEM',
+        startX: 85, startY: 35,
+        endX: 78, endY: 72,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -8,
+        delay: 160, duration: 800,
+        fill: '#06D6A0',
+        d: 'M -10,-12 L 12,-12 L 10,14 L -8,10 Z'
+      },
+      {
+        id: 'v_stem_mid_outer',
+        type: 'V_STEM',
+        startX: 25, startY: 130,
+        endX: 68, endY: 108,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 10,
+        delay: 220, duration: 850,
+        fill: '#00B4D8',
+        d: 'M -12,-16 L 14,-10 L 6,18 L -12,12 Z'
+      },
+      {
+        id: 'v_stem_mid_inner',
+        type: 'V_STEM',
+        startX: 95, startY: 85,
+        endX: 92, endY: 105,
+        startScale: 0.3, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -6,
+        delay: 260, duration: 820,
+        fill: '#0096C7',
+        d: 'M -10,-14 L 14,-10 L 8,16 L -8,12 Z'
+      },
+      {
+        id: 'v_stem_lower_outer',
+        type: 'V_STEM',
+        startX: 45, startY: 180,
+        endX: 86, endY: 142,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 8,
+        delay: 320, duration: 850,
+        fill: '#0284C7',
+        d: 'M -12,-15 L 14,-8 L 6,18 L -10,14 Z'
+      },
+      {
+        id: 'v_stem_lower_inner',
+        type: 'V_STEM',
+        startX: 110, startY: 130,
+        endX: 108, endY: 138,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -5,
+        delay: 360, duration: 820,
+        fill: '#0284C7',
+        d: 'M -8,-14 L 12,-8 L 8,16 L -8,12 Z'
+      },
+      {
+        id: 'v_vertex_base',
+        type: 'V_STEM',
+        startX: 90, startY: 220,
+        endX: 105, endY: 184,
+        startScale: 0.3, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -10,
+        delay: 420, duration: 860,
+        fill: '#1D4ED8',
+        d: 'M -25,-12 C -10,14 15,16 28,-2 L 20,-12 C 10,-2 -6,2 -18,-10 Z'
+      },
+      {
+        id: 'v_vertex_junction',
+        type: 'V_STEM',
+        startX: 140, startY: 195,
+        endX: 130, endY: 160,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 15,
+        delay: 480, duration: 820,
+        fill: '#1E3A8A',
+        d: 'M -8,-10 C 6,-4 14,8 10,18 L -4,14 C -2,6 -4,0 -10,-4 Z'
+      },
+
+      // == 2. MAIN BOTANICAL LEAF (8 Elements) ==
+      {
+        id: 'leaf_root_seed',
+        type: 'LEAF_MAIN',
+        startX: 125, startY: 175,
+        endX: 134, endY: 146,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -12,
+        delay: 620, duration: 750,
+        fill: '#0077B6',
+        d: 'M -6,8 C -4,0 2,-6 8,-8 L 10,-2 C 4,2 0,6 -2,10 Z'
+      },
+      {
+        id: 'leaf_lower_inner_fold',
+        type: 'LEAF_MAIN',
+        startX: 110, startY: 120,
+        endX: 133, endY: 122,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -8,
+        delay: 680, duration: 780,
+        fill: '#0096C7',
+        d: 'M -5,14 C -6,2 0,-10 8,-16 L 14,-10 C 8,-2 4,6 4,16 Z'
+      },
+      {
+        id: 'leaf_mid_inner_spine',
+        type: 'LEAF_MAIN',
+        startX: 120, startY: 80,
+        endX: 142, endY: 94,
+        startScale: 0.3, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -6,
+        delay: 740, duration: 800,
+        fill: '#00B4D8',
+        d: 'M -8,16 C -6,2 4,-12 14,-18 L 18,-10 C 10,-2 4,8 0,20 Z'
+      },
+      {
+        id: 'leaf_upper_spine',
+        type: 'LEAF_MAIN',
+        startX: 145, startY: 50,
+        endX: 164, endY: 68,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -4,
+        delay: 800, duration: 820,
+        fill: '#10B981',
+        d: 'M -10,16 C -6,0 8,-12 18,-18 L 22,-10 C 12,-2 4,8 0,18 Z'
+      },
+      {
+        id: 'leaf_apex_tip',
+        type: 'LEAF_MAIN',
+        startX: 235, startY: 10,
+        endX: 204, endY: 30,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 20,
+        delay: 880, duration: 850,
+        fill: '#86EFAC',
+        d: 'M -18,14 C -8,6 6,-4 14,-12 C 14,-10 10,2 2,12 C -4,16 -12,16 -18,14 Z'
+      },
+      {
+        id: 'leaf_upper_outer_blade',
+        type: 'LEAF_MAIN',
+        startX: 230, startY: 60,
+        endX: 196, endY: 62,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 15,
+        delay: 920, duration: 850,
+        fill: '#4ADE80',
+        d: 'M -12,-16 C 6,-6 18,6 18,18 L 10,16 C 8,6 0,-4 -14,-10 Z'
+      },
+      {
+        id: 'leaf_mid_outer_blade',
+        type: 'LEAF_MAIN',
+        startX: 215, startY: 105,
+        endX: 182, endY: 96,
+        startScale: 0.3, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 12,
+        delay: 960, duration: 840,
+        fill: '#22C55E',
+        d: 'M -10,-16 C 8,-4 16,8 14,20 L 6,18 C 6,6 0,-4 -12,-10 Z'
+      },
+      {
+        id: 'leaf_lower_outer_blade',
+        type: 'LEAF_MAIN',
+        startX: 190, startY: 140,
+        endX: 158, endY: 128,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 10,
+        delay: 1020, duration: 820,
+        fill: '#10B981',
+        d: 'M -8,-16 C 6,-4 14,8 10,20 L 2,16 C 4,6 0,-4 -10,-10 Z'
+      },
+
+      // == 3. SECONDARY LOWER LEAF (5 Elements) ==
+      {
+        id: 'subleaf_root',
+        type: 'LEAF_SUB',
+        startX: 130, startY: 145,
+        endX: 144, endY: 152,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -10,
+        delay: 980, duration: 750,
+        fill: '#0077B6',
+        d: 'M -8,-2 C 0,-6 8,-6 14,-2 L 12,6 C 8,2 2,2 -4,4 Z'
+      },
+      {
+        id: 'subleaf_upper_curve',
+        type: 'LEAF_SUB',
+        startX: 170, startY: 120,
+        endX: 168, endY: 140,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -6,
+        delay: 1040, duration: 780,
+        fill: '#00B4D8',
+        d: 'M -14,-4 C -4,-8 8,-6 18,2 L 14,8 C 6,2 -2,0 -12,4 Z'
+      },
+      {
+        id: 'subleaf_petal_tip',
+        type: 'LEAF_SUB',
+        startX: 215, startY: 135,
+        endX: 188, endY: 144,
+        startScale: 0.2, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 15,
+        delay: 1100, duration: 800,
+        fill: '#38BDF8',
+        d: 'M -12,-8 C -2,-10 8,-4 8,4 C 6,10 -2,12 -10,10 Z'
+      },
+      {
+        id: 'subleaf_underbelly',
+        type: 'LEAF_SUB',
+        startX: 185, startY: 185,
+        endX: 168, endY: 168,
+        startScale: 0.3, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: 12,
+        delay: 1150, duration: 820,
+        fill: '#0284C7',
+        d: 'M 14,-10 C 6,4 -4,14 -16,18 L -14,10 C -4,6 4,0 10,-8 Z'
+      },
+      {
+        id: 'subleaf_base_closure',
+        type: 'LEAF_SUB',
+        startX: 140, startY: 188,
+        endX: 142, endY: 176,
+        startScale: 0.25, endScale: 1.0,
+        startOpacity: 0.0, endOpacity: 1.0,
+        rotation: -8,
+        delay: 1200, duration: 800,
+        fill: '#2563EB',
+        d: 'M 10,-12 C 4,-2 -4,6 -12,8 L -10,0 C -4,-2 2,-6 6,-10 Z'
+      }
+    ];
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    const svgElementsLayer = document.getElementById('elementsLayer');
+    const finalLogoGroup = document.getElementById('finalLogoGroup');
+    const wordmarkBlock = document.getElementById('wordmarkBlock');
+    const ambientGlow = document.getElementById('ambientGlow');
+    const timingBadge = document.getElementById('timingBadge');
+    const phaseLabel = document.getElementById('phaseLabel');
+    const scrubber = document.getElementById('timeScrubber');
+    const btnPlay = document.getElementById('btnPlay');
+    const btnRestart = document.getElementById('btnRestart');
+    const chkReducedMotion = document.getElementById('chkReducedMotion');
+    const chkShowWireframes = document.getElementById('chkShowWireframes');
+    const playIcon = document.getElementById('playIcon');
+
+    const renderedNodes = LOGO_ELEMENTS.map(elem => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('id', elem.id);
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', elem.d);
+      path.setAttribute('fill', elem.fill);
+
+      g.appendChild(path);
+      svgElementsLayer.appendChild(g);
+      return { data: elem, node: g, path: path };
+    });
+
+    let currentTimestamp = 0;
+    let isPlaying = true;
+    let lastTime = null;
+
+    function updateAnimationState(ms) {
+      currentTimestamp = Math.min(Math.max(ms, 0), 2400);
+      timingBadge.textContent = `${Math.round(currentTimestamp)}ms / 2400ms`;
+      scrubber.value = currentTimestamp;
+
+      if (currentTimestamp < 300) {
+        phaseLabel.textContent = 'Frame 1: Initial Seeds (0–300ms)';
+      } else if (currentTimestamp < 700) {
+        phaseLabel.textContent = 'Frame 2: Approaching Coordinates (300–700ms)';
+      } else if (currentTimestamp < 1250) {
+        phaseLabel.textContent = 'Frame 3: V-Stem Constructing (700–1250ms)';
+      } else if (currentTimestamp < 1700) {
+        phaseLabel.textContent = 'Frame 4: Leaves Assembling (1250–1700ms)';
+      } else if (currentTimestamp < 2050) {
+        phaseLabel.textContent = 'Frame 5: Geometry Locked & Glow (1700–2050ms)';
+      } else {
+        phaseLabel.textContent = 'Frame 6: Final Velora Identity (2050–2400ms)';
+      }
+
+      const reducedMotion = chkReducedMotion.checked;
+
+      if (reducedMotion) {
+        const fadeProgress = easeOutCubic(Math.min(currentTimestamp / 600, 1.0));
+        renderedNodes.forEach(rn => rn.node.style.opacity = '0');
+        finalLogoGroup.style.opacity = fadeProgress;
+        
+        if (currentTimestamp >= 600) {
+          const wmProg = easeOutCubic(Math.min((currentTimestamp - 600) / 400, 1.0));
+          wordmarkBlock.style.opacity = wmProg;
+          wordmarkBlock.style.transform = `translateY(${(1 - wmProg) * 10}px)`;
+        } else {
+          wordmarkBlock.style.opacity = '0';
+          wordmarkBlock.style.transform = 'translateY(10px)';
+        }
+        return;
+      }
+
+      const showWireframes = chkShowWireframes.checked;
+
+      renderedNodes.forEach(({ data, node, path }) => {
+        if (currentTimestamp < data.delay) {
+          node.style.opacity = '0';
+          return;
+        }
+
+        const elapsed = currentTimestamp - data.delay;
+        const progressRaw = Math.min(elapsed / data.duration, 1.0);
+        const progress = easeOutCubic(progressRaw);
+
+        const currentX = data.startX + (data.endX - data.startX) * progress;
+        const currentY = data.startY + (data.endY - data.startY) * progress;
+        const scale = data.startScale + (data.endScale - data.startScale) * progress;
+        const opacity = data.startOpacity + (data.endOpacity - data.startOpacity) * progress;
+        const rotation = data.rotation * (1.0 - progress);
+
+        node.setAttribute('transform', `translate(${currentX}, ${currentY}) rotate(${rotation}) scale(${scale})`);
+        node.style.opacity = opacity;
+
+        if (showWireframes) {
+          path.setAttribute('stroke', '#38BDF8');
+          path.setAttribute('stroke-width', '1');
+        } else {
+          path.removeAttribute('stroke');
+          path.removeAttribute('stroke-width');
+        }
+      });
+
+      if (currentTimestamp >= 1550) {
+        const fusionProg = easeOutCubic(Math.min((currentTimestamp - 1550) / 350, 1.0));
+        finalLogoGroup.style.opacity = fusionProg;
+        ambientGlow.style.opacity = fusionProg * 0.9;
+        
+        const fragmentFade = 1.0 - fusionProg;
+        renderedNodes.forEach(rn => rn.node.style.opacity = fragmentFade);
+      } else {
+        finalLogoGroup.style.opacity = '0';
+        ambientGlow.style.opacity = '0';
+      }
+
+      if (currentTimestamp >= 2000) {
+        const wordmarkProg = easeOutCubic(Math.min((currentTimestamp - 2000) / 380, 1.0));
+        wordmarkBlock.style.opacity = wordmarkProg;
+        wordmarkBlock.style.transform = `translateY(${(1 - wordmarkProg) * 12}px)`;
+      } else {
+        wordmarkBlock.style.opacity = '0';
+        wordmarkBlock.style.transform = 'translateY(12px)';
+      }
+    }
+
+    function tick(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = timestamp - lastTime;
+      lastTime = timestamp;
+
+      if (isPlaying) {
+        currentTimestamp += dt;
+        if (currentTimestamp >= 2400) {
+          currentTimestamp = 2400;
+          isPlaying = false;
+          playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        }
+        updateAnimationState(currentTimestamp);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+
+    btnPlay.addEventListener('click', () => {
+      if (currentTimestamp >= 2400) {
+        currentTimestamp = 0;
+      }
+      isPlaying = !isPlaying;
+      playIcon.innerHTML = isPlaying 
+        ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+        : '<path d="M8 5v14l11-7z"/>';
+    });
+
+    btnRestart.addEventListener('click', () => {
+      currentTimestamp = 0;
+      isPlaying = true;
+      playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    });
+
+    scrubber.addEventListener('input', (e) => {
+      isPlaying = false;
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+      updateAnimationState(parseFloat(e.target.value));
+    });
+
+    chkReducedMotion.addEventListener('change', () => updateAnimationState(currentTimestamp));
+    chkShowWireframes.addEventListener('change', () => updateAnimationState(currentTimestamp));
+  </script>
+</body>
+</html>

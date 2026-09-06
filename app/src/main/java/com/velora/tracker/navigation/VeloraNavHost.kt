@@ -29,6 +29,7 @@ import com.velora.tracker.presentation.dashboard.DashboardScreen
 import com.velora.tracker.presentation.dashboard.DashboardViewModel
 import com.velora.tracker.presentation.settings.SettingsScreen
 import com.velora.tracker.presentation.settings.SettingsViewModel
+import com.velora.tracker.presentation.splash.SplashScreen
 import com.velora.tracker.presentation.transactions.TransactionDetailScreen
 import com.velora.tracker.presentation.transactions.TransactionDetailViewModel
 import com.velora.tracker.presentation.transactions.TransactionsScreen
@@ -81,9 +82,19 @@ fun VeloraNavHost(application: Application) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = VeloraDestination.Dashboard.route,
-            modifier = Modifier.padding(innerPadding)
+            startDestination = VeloraDestination.Splash.route,
+            modifier = Modifier.padding(if (currentRoute == VeloraDestination.Splash.route) androidx.compose.foundation.layout.PaddingValues(0.dp) else innerPadding)
         ) {
+            composable(VeloraDestination.Splash.route) {
+                SplashScreen(
+                    onSplashFinished = {
+                        navController.navigate(VeloraDestination.Dashboard.route) {
+                            popUpTo(VeloraDestination.Splash.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
             composable(VeloraDestination.Dashboard.route) {
                 val viewModel: DashboardViewModel = viewModel(
                     factory = DashboardViewModel.provideFactory(app)
